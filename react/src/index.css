@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+/* h1 {
+  @apply font-bold hover:bg-red-700;
+} */
+
+.myFlex {
+  @apply flex justify-center items-center;
+}
+.bg-primary {
+  @apply bg-red-600;
+}
