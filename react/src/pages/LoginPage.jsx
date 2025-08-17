@@ -1,11 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const LoginPage = () => {
-  const user = {
-    email: "jhon@gmail.com",
-    password: "1234567890",
-  };
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,7 +11,7 @@ const LoginPage = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.email === "" || formData.password === "") {
       alert("Please enter all field");
@@ -26,8 +22,16 @@ const LoginPage = () => {
       alert("Please enter password more than 8 char");
       return;
     }
-    console.log(formData);
-    localStorage.setItem("loginUser", JSON.stringify(formData));
+
+    await axios
+      .post("http://localhost:5555/api/login", formData)
+      .then((res) => {
+        return alert(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        return alert("Error while logging in");
+      });
   };
 
   return (
