@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const RegisterPage = () => {
+const EditUser = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     password: "",
-    role: "user",
   });
 
   const handleChange = (e) => {
@@ -29,7 +29,7 @@ const RegisterPage = () => {
     }
 
     await axios
-      .post("http://localhost:5550/api/register", formData)
+      .post(`http://localhost:5550/api/update-user/${parseInt(id)}`, formData)
       .then((res) => {
         navigate("/crud");
       })
@@ -39,6 +39,21 @@ const RegisterPage = () => {
       });
   };
 
+  const fetchData = async () => {
+    await axios
+      .get(`http://localhost:5550/api/get-single-user/${parseInt(id)}`)
+      .then((res) => {
+        setFormData(res.data);
+      })
+      .catch((err) => {
+        console.error("Error in fetching user data:", err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">
       <form
@@ -46,13 +61,14 @@ const RegisterPage = () => {
         action=""
         className="flex flex-col p-12 gap-12 w-[40%] bg-white rounded-lg shadow-lg"
       >
-        <h1 className="text-4xl font-bold text-center">Register</h1>
+        <h1 className="text-4xl font-bold text-center">Edit User</h1>
         <input
           className="border-2 rounded-md p-2 px-4"
           type="text"
           placeholder="Enter Name"
           name="name"
           onChange={handleChange}
+          value={formData.name}
         />
         <input
           className="border-2 rounded-md p-2 px-4"
@@ -60,6 +76,7 @@ const RegisterPage = () => {
           placeholder="Enter Phone"
           name="phone"
           onChange={handleChange}
+          value={formData.phone}
         />
         <input
           className="border-2 rounded-md p-2 px-4"
@@ -67,13 +84,15 @@ const RegisterPage = () => {
           placeholder="Enter email"
           name="email"
           onChange={handleChange}
+          value={formData.email}
         />
         <input
           className="border-2 rounded-md p-2 px-4"
-          type="password"
+          type="text"
           placeholder="Enter password"
           name="password"
           onChange={handleChange}
+          value={formData.password}
         />
         <input
           className="border-2 rounded-md p-2 px-4 font-bold hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
@@ -85,4 +104,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default EditUser;

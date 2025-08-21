@@ -30,6 +30,16 @@ export const getUser = (req, res) => {
   });
 };
 
+export const getSingleUser = (req, res) => {
+  const id = req.params.id;
+
+  const q = "select * from user where id = ?";
+  db.query(q, [parseInt(id)], (err, result) => {
+    if (err) return res.send({ message: "error while excuting query", err });
+    return res.send(result[0]);
+  });
+};
+
 export const updateUser = (req, res) => {
   const { name, phone, email, password } = req.body;
   const id = parseInt(req.params.id);

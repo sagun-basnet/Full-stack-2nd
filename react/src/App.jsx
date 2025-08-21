@@ -10,6 +10,8 @@ import Footer from "./components/Footer";
 import LoginPage from "./pages/LoginPage";
 import FetchAPI from "./components/FetchAPI";
 import RegisterPage from "./pages/RegisterPage";
+import CRUD from "./components/CRUD";
+import EditUser from "./components/EditUser";
 
 const App = () => {
   const Layout = () => {
@@ -84,8 +86,16 @@ const App = () => {
       element: <RegisterPage />,
     },
     {
+      path: "/edit-user/:id",
+      element: <EditUser />,
+    },
+    {
       path: "/fetch-api",
       element: <FetchAPI />,
+    },
+    {
+      path: "/crud",
+      element: <CRUD />,
     },
     {
       path: "*",
