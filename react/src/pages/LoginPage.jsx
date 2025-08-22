@@ -24,8 +24,10 @@ const LoginPage = () => {
     }
 
     await axios
-      .post("http://localhost:5555/api/login", formData)
+      .post("http://localhost:5550/api/login", formData)
       .then((res) => {
+        console.log(res);
+
         return alert(res.data.message);
       })
       .catch((err) => {

@@ -1,4 +1,6 @@
 import db from "../db/db.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
   //receiving data......
@@ -9,11 +11,14 @@ export const register = (req, res) => {
     return res.send({ message: "All field is required" });
   }
 
+  const salt = bcrypt.genSaltSync(10);
+  const hashPassword = bcrypt.hashSync(password, salt);
+
   //insert query........
   const q = `insert into user(name, phone, email, password, role) value(?,?,?,?,?)`;
 
   //executing query.....
-  db.query(q, [name, phone, email, password, role], (err, result) => {
+  db.query(q, [name, phone, email, hashPassword, role], (err, result) => {
     if (err) {
       return res.send({ message: "Error while executing quary", err });
     }
@@ -82,6 +87,7 @@ export const deleteUser = (req, res) => {
 
 export const login = (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   if (!email || !password) {
     return res.send("required all field");
@@ -97,10 +103,23 @@ export const login = (req, res) => {
       return res.send({ message: "User not found.", status: 0 });
     }
 
-    if (result[0].password !== password) {
-      return res.send({ message: "Password not match", status: 1 });
-    }
+    const isPasswordMatch = bcrypt.compareSync(password, result[0].password);
 
-    return res.send({ message: "Logged in sucessfully", result, status: 2 });
+    if (isPasswordMatch) {
+      const token = jwt.sign(
+        { role: result[0].role, name: result[0].name, email: email },
+        "secretkey"
+      );
+
+      const { password, ...others } = result[0];
+
+      return res.send({
+        message: "Logged in sucessfully",
+        others,
+        status: 2,
+        token: token,
+      });
+    }
+    return res.send({ message: "Password not match", status: 1 });
   });
 };
