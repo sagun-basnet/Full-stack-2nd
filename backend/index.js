@@ -1,6 +1,7 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 configDotenv();
+import userRoute from "./routes/userRoute.js";
 
 const app = express();
 
@@ -8,9 +9,7 @@ const port = process.env.PORT;
 
 app.use(express.json());
 
-app.get("/get-user", (req, res) => {
-  res.send("I am form backend /get-user");
-});
+app.use("/", userRoute);
 
 app.post("/post-user", (req, res) => {
   const { name, email } = req.body;
