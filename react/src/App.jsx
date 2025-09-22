@@ -12,6 +12,7 @@ import FetchAPI from "./components/FetchAPI";
 import RegisterPage from "./pages/RegisterPage";
 import CRUD from "./components/CRUD";
 import EditUser from "./components/EditUser";
+import Table from "./components/Table";
 
 const App = () => {
   const Layout = () => {
@@ -92,6 +93,10 @@ const App = () => {
     {
       path: "/fetch-api",
       element: <FetchAPI />,
+    },
+    {
+      path: "/table",
+      element: <Table />,
     },
     {
       path: "/crud",

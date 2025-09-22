@@ -9,7 +9,6 @@ const RegisterPage = () => {
     phone: "",
     email: "",
     password: "",
-    role: "user",
   });
 
   const handleChange = (e) => {
@@ -28,15 +27,16 @@ const RegisterPage = () => {
       return;
     }
 
-    await axios
-      .post("http://localhost:5550/api/register", formData)
+    axios
+      .post("http://localhost:5005/post-user", formData)
       .then((res) => {
-        navigate("/crud");
+        console.log(res);
+        alert(res.data.message);
       })
       .catch((err) => {
         console.log(err);
-        return alert("Error while logging in");
       });
+    navigate("/table");
   };
 
   return (

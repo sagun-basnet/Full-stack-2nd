@@ -1,13 +1,12 @@
 import db from "../db/db.js";
 
 export const getUser = (req, res) => {
-  const user = {
-    name: "jhon deo",
-    email: "jhon@gmail.com",
-    password: "123456789",
-  };
+  const q = "select * from user";
+  db.query(q, (err, result) => {
+    if (err) return res.send({ message: "Error while executing query" });
 
-  res.send(user);
+    return res.send({ message: "Query excuted", result });
+  });
 };
 
 export const postUser = (req, res) => {
