@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import CRUD from "./components/CRUD";
 import EditUser from "./components/EditUser";
 import Table from "./components/Table";
+import UpdateUser from "./pages/UpdateUser";
 
 const App = () => {
   const Layout = () => {
@@ -101,6 +102,10 @@ const App = () => {
     {
       path: "/crud",
       element: <CRUD />,
+    },
+    {
+      path: "/update-user/:id",
+      element: <UpdateUser />,
     },
     {
       path: "*",

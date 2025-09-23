@@ -2,9 +2,10 @@ import axios from "axios";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Table = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
 
   const fetchData = async () => {
@@ -33,6 +34,10 @@ const Table = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/update-user/${id}`);
   };
 
   return (
@@ -79,7 +84,10 @@ const Table = () => {
                   <td className="px-6 py-4">{item.email}</td>
                   <td className="px-6 py-4">{item.password}</td>
                   <td className="px-6 py-4 flex gap-2">
-                    <button className="p-2 px-4 rounded-md font-bold bg-blue-500 text-white">
+                    <button
+                      className="p-2 px-4 rounded-md font-bold bg-blue-500 text-white"
+                      onClick={() => handleEdit(item.id)}
+                    >
                       Edit
                     </button>
                     <button
