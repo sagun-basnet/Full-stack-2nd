@@ -1,4 +1,5 @@
 import db from "../db/db.js";
+import bcrypt from "bcryptjs";
 
 export const getUser = (req, res) => {
   const q = "select * from user";
@@ -12,7 +13,7 @@ export const getUser = (req, res) => {
 export const getSingleUser = (req, res) => {
   const id = req.params.id;
   const q = "select * from user where id = ?";
-  db.query(q,[parseInt(id)] ,(err, result) => {
+  db.query(q, [parseInt(id)], (err, result) => {
     if (err) return res.send({ message: "Error while executing query" });
 
     return res.send({ message: "Query excuted", result });
@@ -27,11 +28,15 @@ export const postUser = (req, res) => {
   if (!name || !phone || !email || !password) {
     return res.send({ message: "All field required" });
   }
+
+  const salt = bcrypt.genSaltSync(10);
+  const hashPassword = bcrypt.hashSync(password, salt);
+
   //query
   const q = "insert into user(name, phone, email, password) value(?,?,?,?)";
 
   //executing query
-  db.query(q, [name, phone, email, password], (err, result) => {
+  db.query(q, [name, phone, email, hashPassword], (err, result) => {
     if (err) {
       return res.send({ message: "Error while executing query", err });
     }

@@ -24,7 +24,7 @@ const LoginPage = () => {
     }
 
     await axios
-      .post("http://localhost:5550/api/login", formData)
+      .post("http://localhost:5005/login", formData)
       .then((res) => {
         console.log(res);
 
