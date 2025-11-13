@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,17 +28,9 @@ const LoginPage = () => {
       return;
     }
 
-    await axios
-      .post("http://localhost:5005/login", formData)
-      .then((res) => {
-        console.log(res);
-
-        return alert(res.data.message);
-      })
-      .catch((err) => {
-        console.log(err);
-        return alert("Error while logging in");
-      });
+    const res = await login(formData);
+    console.log(res, "RES");
+    navigate("/");
   };
 
   return (
