@@ -7,10 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 const CRUD = () => {
   const [data, setData] = useState([]);
   const navigation = useNavigate();
+  const token = localStorage.getItem("authToken");
 
   const fetchData = async () => {
     await axios
-      .get("http://localhost:5550/api/get-user")
+      .get("http://localhost:5550/api/get-user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         setData(res.data.result);
@@ -26,7 +31,11 @@ const CRUD = () => {
 
   const handleDelete = async (id) => {
     await axios
-      .post(`http://localhost:5550/api/delete-user/${id}`)
+      .post(`http://localhost:5550/api/delete-user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
         alert(res.data.message);
         fetchData();
